@@ -139,12 +139,6 @@ This project is intentionally simple and portable:
 
 Open `neon_typeracer.html` in a modern browser.
 
-## Why this format works well
-
-The game is designed for short sessions with immediate feedback. You can start a race in seconds, but there is enough depth in the combo, multiplier, checkpoint, and Nitro systems to keep repeated runs interesting.
-
-That makes it a good fit for browser play, small game jams, and itch.io-style releases where quick access matters.
-
 ## Roadmap ideas
 
 - Persistent high scores saved across sessions
