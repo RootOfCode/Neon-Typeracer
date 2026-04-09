@@ -4,19 +4,22 @@ A fast-paced browser typing game with a neon arcade vibe. Race against 3 AI oppo
 
 ## Features
 
-- 3 AI opponents with different difficulty levels
+- 3 AI opponents with different speed profiles
 - 3 word packs: Classic, Tech, and Nature
-- Boost and Freeze power-ups
-- Combo-based rewards
-- Accuracy, WPM, and progress tracking
-- Sound effects and win/lose feedback
-- Retro neon UI with animated race results
+- Easy, Medium, and Hard AI difficulty settings
+- Boost and Freeze power-ups earned through word streaks
+- Combo tracking and race feedback
+- Live WPM, accuracy, word count, time, and progress tracking
+- Sound effects with on/off toggle
+- Win/lose results screen with animated confetti for first place
+- Mobile-friendly controls plus a virtual keyboard
+- Retro neon UI built in a single HTML file
 
 ## How to Play
 
-1. Open the game in a browser.
-2. Choose a word pack.
-3. Select a difficulty: Easy, Medium, or Hard.
+1. Open the game in a modern browser.
+2. Choose a word pack: Classic, Tech, or Nature.
+3. Select an AI difficulty: Easy, Medium, or Hard.
 4. Type the current word shown on screen.
 5. Press `Space` to submit the word.
 6. Use `Tab` for Boost and `Esc` for Freeze.
@@ -27,13 +30,17 @@ A fast-paced browser typing game with a neon arcade vibe. Race against 3 AI oppo
 - `Tab` — activate Boost
 - `Esc` — activate Freeze
 - Click the typing box to focus it
+- On mobile, use the on-screen buttons to submit, boost, freeze, and toggle fullscreen
+- On mobile, tap the virtual keyboard letters to type
 
 ## Power-Ups
 
-- **Boost**: Temporarily increases your speed
-- **Freeze**: Temporarily slows or stops the AI racers
+- **Boost**: temporarily increases your speed
+- **Freeze**: temporarily slows or stops the AI racers
 
-Power-ups are earned by building word streaks during the race.
+Power-ups are earned by building word streaks during the race:
+- Boost is earned every 5 correct words in a row, up to 3 charges
+- Freeze is earned every 8 correct words in a row, up to 2 charges
 
 ## Word Packs
 
@@ -41,23 +48,29 @@ Power-ups are earned by building word streaks during the race.
 - **Tech**: programming and software terms
 - **Nature**: words inspired by the natural world
 
+## Game Modes
+
+- **Start screen**: choose your word pack and difficulty
+- **Race screen**: type words, watch the cars move, and manage power-ups
+- **Results screen**: see your rank, WPM, accuracy, and finish order
+
 ## Project Info
 
 This project is built as a single-file HTML game, making it easy to run, share, and modify.
 
+Personal bests are tracked in the browser session and reset when the page is reloaded.
+
 ## Running Locally
 
-Just open the HTML file in a modern browser.
-
-If you want to host it on GitHub Pages, upload the HTML file to your repository and enable Pages in your repo settings.
+Open `neon_typeracer.html` in a modern browser.
 
 ## Roadmap Ideas
 
-- Mobile-friendly controls
+- Save personal bests locally across sessions
 - More word packs
 - Online leaderboard
-- Local high-score saving
 - More AI personalities
+- Better mobile layouts for smaller screens
 
 ## License
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Neon Typeracer</title></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Neon Typeracer</title></head>
 <body style="margin:0;padding:12px;background:#06060f">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -103,6 +103,24 @@
 
 /* confetti */
 #confettiC{position:absolute;top:0;left:0;pointer-events:none;border-radius:12px;z-index:100}
+
+/* MOBILE UI */
+.mobile #mobileControls{display:flex}
+.mobile #virtualKeyboard{display:block}
+#virtualKeyboard{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:4px;
+}
+.vkey{
+  padding:8px;
+  background:#0b0b22;
+  border:1px solid #00d4ff;
+  color:#fff;
+  border-radius:6px;
+  font-size:12px;
+}
+
 </style>
 
 <div class="g" id="G">
@@ -175,6 +193,18 @@
     <button class="btn green" onclick="startRace(lastDiff)">Race Again</button>
     <button class="btn" onclick="showStart()">Menu</button>
   </div>
+</div>
+
+
+<!-- MOBILE CONTROLS -->
+<div id="mobileControls" style="display:none;margin-top:8px;gap:6px;flex-wrap:wrap">
+  <button class="btn green" onclick="mobileSubmit()">SPACE ⏎</button>
+  <button class="btn" onclick="useBoost()">⚡</button>
+  <button class="btn red" onclick="useFreeze()">❄️</button>
+  <button class="btn" onclick="toggleFullscreen()">⛶</button>
+</div>
+
+<div id="virtualKeyboard" style="display:none;margin-top:6px">
 </div>
 
 </div><!-- .g -->
@@ -636,6 +666,51 @@ document.addEventListener('keydown',e=>{
     if(document.activeElement!==inp && e.key!=='Tab' && e.key!=='Escape') inp.focus();
   }
 });
+
+/* MOBILE HELPERS */
+function isMobile(){
+  return window.matchMedia("(pointer:coarse)").matches || window.innerWidth<768;
+}
+
+function mobileSubmit(){
+  const e = new KeyboardEvent("keydown",{key:" "});
+  document.dispatchEvent(e);
+}
+
+function toggleFullscreen(){
+  const el=document.documentElement;
+  if(!document.fullscreenElement){ el.requestFullscreen?.(); }
+  else{ document.exitFullscreen?.(); }
+}
+
+function buildKeyboard(){
+  const keys="qwertyuiopasdfghjklzxcvbnm".split("");
+  const kb=document.getElementById("virtualKeyboard");
+  if(!kb) return;
+  kb.innerHTML="";
+  keys.forEach(k=>{
+    const b=document.createElement("button");
+    b.className="vkey";
+    b.textContent=k;
+    b.onclick=()=>{
+      const inp=document.getElementById("inp");
+      inp.value+=k;
+      inp.dispatchEvent(new Event("input"));
+    };
+    kb.appendChild(b);
+  });
+}
+
+function detectMobileUI(){
+  document.body.classList.toggle("mobile",isMobile());
+}
+
+window.addEventListener("load",()=>{
+  detectMobileUI();
+  buildKeyboard();
+});
+window.addEventListener("resize",detectMobileUI);
+
 </script>
 </body>
 </html>
