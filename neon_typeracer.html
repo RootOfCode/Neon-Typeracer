@@ -403,25 +403,31 @@ function renderMapGrid(){
 function drawMapPreview(cv,key,cfg){
   const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   ctx.fillStyle='#040810';ctx.fillRect(0,0,W,H);
-  // Draw mini track path
-  const pts=[];for(let d=0;d<=TL;d+=40){const p=trackPattern(key,-d);pts.push(p)}
-  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
-  pts.forEach(p=>{minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);maxY=Math.max(maxY,p.y)});
-  const pad=14,sx=(W-pad*2)/(maxX-minX||1),sy=(H-pad*2)/(maxY-minY||1),sc=Math.min(sx,sy)*.7;
-  const cx=W/2-(minX+maxX)/2*sc,cy=H/2-(minY+maxY)/2*sc;
-  // Glow
-  ctx.shadowBlur=12;ctx.shadowColor=cfg.pc;
-  // Track outline
-  ctx.strokeStyle=cfg.pc+'44';ctx.lineWidth=10;ctx.lineCap='round';ctx.lineJoin='round';
-  ctx.beginPath();pts.forEach((p,i)=>{i===0?ctx.moveTo(cx+p.x*sc,cy+p.y*sc):ctx.lineTo(cx+p.x*sc,cy+p.y*sc)});ctx.stroke();
-  // Track center
-  ctx.strokeStyle=cfg.pc;ctx.lineWidth=2.5;ctx.shadowBlur=8;
-  ctx.beginPath();pts.forEach((p,i)=>{i===0?ctx.moveTo(cx+p.x*sc,cy+p.y*sc):ctx.lineTo(cx+p.x*sc,cy+p.y*sc)});ctx.stroke();
-  // Start marker
-  const s=pts[0];ctx.shadowBlur=14;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(cx+s.x*sc,cy+s.y*sc,5,0,Math.PI*2);ctx.fill();
-  // Biome label
-  ctx.shadowBlur=0;ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(6,6,W-12,18);
-  ctx.fillStyle=cfg.pc;ctx.font='bold 8px Orbitron,monospace';ctx.textAlign='left';ctx.fillText(cfg.label,10,18);
+  // Top-down bird's-eye: screenX = lateral (p.x), screenY = distance (d)
+  const pts=[];for(let d=0;d<=TL;d+=25){const p=trackPattern(key,-d);pts.push({x:p.x,d})}
+  let minX=Infinity,maxX=-Infinity;
+  pts.forEach(p=>{minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x)});
+  const pad=12;
+  const scX=(W-pad*2)/(maxX-minX||1);
+  const scY=(H-pad*2)/TL;
+  const ox=pad-minX*scX,oy=pad;
+  const sx=x=>ox+x*scX,sy=d=>oy+d*scY;
+  // Track glow outline
+  ctx.shadowBlur=10;ctx.shadowColor=cfg.pc;
+  ctx.strokeStyle=cfg.pc+'38';ctx.lineWidth=8;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(sx(p.x),sy(p.d)):ctx.lineTo(sx(p.x),sy(p.d)));ctx.stroke();
+  // Track center line
+  ctx.strokeStyle=cfg.pc;ctx.lineWidth=2;ctx.shadowBlur=5;
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(sx(p.x),sy(p.d)):ctx.lineTo(sx(p.x),sy(p.d)));ctx.stroke();
+  // Checkpoint ticks
+  for(let c=1;c<=CKC;c++){const cd=c*CKE;const cp=trackPattern(key,-cd);ctx.fillStyle=cfg.pc+'99';ctx.shadowBlur=4;ctx.beginPath();ctx.arc(sx(cp.x),sy(cd),2.5,0,Math.PI*2);ctx.fill()}
+  // Start dot (white)
+  ctx.shadowBlur=12;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sx(pts[0].x),sy(0),4,0,Math.PI*2);ctx.fill();
+  // Finish dot (theme color)
+  ctx.fillStyle=cfg.pc;ctx.beginPath();ctx.arc(sx(pts[pts.length-1].x),sy(TL),4,0,Math.PI*2);ctx.fill();
+  // Label bar
+  ctx.shadowBlur=0;ctx.fillStyle='rgba(0,0,0,.62)';ctx.fillRect(5,5,W-10,17);
+  ctx.fillStyle=cfg.pc;ctx.font='bold 7px Orbitron,monospace';ctx.textAlign='left';ctx.fillText(cfg.label,9,16);
 }
 
 // ═══ GARAGE 3D ═══
@@ -840,34 +846,59 @@ function drawMinimap(){
   const ctx=cv.getContext('2d'),W=154,H=154;
   ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(0,0,W,H);
   const cfg=MAP_CONFIGS[currentMap];
-  // Track
-  const pts=[];for(let d=0;d<=TL;d+=60){const p=trackPattern(currentMap,-d);pts.push(p)}
-  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
-  pts.forEach(p=>{minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);maxY=Math.max(maxY,p.y)});
-  const pad=14,sc=Math.min((W-pad*2)/Math.max(1,maxX-minX),(H-pad*2)/Math.max(1,maxY-minY))*.75;
-  const ox=W/2-(minX+maxX)/2*sc,oy=H/2-(minY+maxY)/2*sc;
-  const tx=d=>{const p=trackPattern(currentMap,-d);return{x:ox+p.x*sc,y:oy+p.y*sc}};
-  // Track line
-  ctx.strokeStyle=cfg.pc+'40';ctx.lineWidth=8;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowBlur=6;ctx.shadowColor=cfg.pc;
-  ctx.beginPath();pts.forEach((p,i)=>{const x=ox+p.x*sc,y=oy+p.y*sc;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});ctx.stroke();
-  ctx.strokeStyle=cfg.pc;ctx.lineWidth=2;
-  ctx.beginPath();pts.forEach((p,i)=>{const x=ox+p.x*sc,y=oy+p.y*sc;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});ctx.stroke();
-  ctx.shadowBlur=0;
-  // Checkpoints
-  for(let c=1;c<=CKC;c++){const tp=tx(c*CKE);ctx.fillStyle=c<=ckIdx?cfg.pc:'rgba(255,255,255,.2)';ctx.beginPath();ctx.arc(tp.x,tp.y,3,0,Math.PI*2);ctx.fill()}
-  // AI dots
-  aiCars.forEach((ai,i)=>{const tp=tx(ai.userData.dist);ctx.fillStyle=i===0?'#ff007f':i===1?'#f39c12':'#8ea2ff';ctx.shadowBlur=6;ctx.shadowColor=ctx.fillStyle;ctx.beginPath();ctx.arc(tp.x,tp.y,4,0,Math.PI*2);ctx.fill()});
+  // Top-down bird's-eye: screenX = lateral (p.x), screenY = distance (d, 0=top=start)
+  const step=40,pts=[];
+  for(let d=0;d<=TL;d+=step){const p=trackPattern(currentMap,-d);pts.push({x:p.x,d})}
+  let minX=Infinity,maxX=-Infinity;
+  pts.forEach(p=>{minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x)});
+  const pad=10;
+  const scX=(W-pad*2)/(maxX-minX||1);
+  const scY=(H-pad*2)/TL;
+  const ox=pad-minX*scX,oy=pad;
+  const sx=x=>ox+x*scX,sy=d=>oy+d*scY;
+  // Wide glow outline (full track)
+  ctx.shadowBlur=7;ctx.shadowColor=cfg.pc;
+  ctx.strokeStyle=cfg.pc+'28';ctx.lineWidth=7;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(sx(p.x),sy(p.d)):ctx.lineTo(sx(p.x),sy(p.d)));ctx.stroke();
+  // Dim track centerline (full track)
+  ctx.strokeStyle=cfg.pc+'55';ctx.lineWidth=1.5;ctx.shadowBlur=0;
+  ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(sx(p.x),sy(p.d)):ctx.lineTo(sx(p.x),sy(p.d)));ctx.stroke();
+  // Completed track segment — bright highlight
+  if(playerDist>step){
+    const cPts=[];for(let d=0;d<=Math.min(playerDist,TL);d+=step){const p=trackPattern(currentMap,-d);cPts.push({x:p.x,d})}
+    ctx.strokeStyle=cfg.pc;ctx.lineWidth=2;ctx.shadowBlur=6;ctx.shadowColor=cfg.pc;
+    ctx.beginPath();cPts.forEach((p,i)=>i===0?ctx.moveTo(sx(p.x),sy(p.d)):ctx.lineTo(sx(p.x),sy(p.d)));ctx.stroke();
+  }
+  // Checkpoint diamonds
+  for(let c=1;c<=CKC;c++){
+    const cd=c*CKE;const cp=trackPattern(currentMap,-cd);
+    const cx2=sx(cp.x),cy2=sy(cd),r=c<=ckIdx?3.5:2.5;
+    ctx.fillStyle=c<=ckIdx?cfg.pc:'rgba(255,255,255,.22)';
+    ctx.shadowBlur=c<=ckIdx?8:0;ctx.shadowColor=cfg.pc;
+    ctx.beginPath();ctx.moveTo(cx2,cy2-r);ctx.lineTo(cx2+r,cy2);ctx.lineTo(cx2,cy2+r);ctx.lineTo(cx2-r,cy2);ctx.closePath();ctx.fill();
+  }
   // Ghost dot
-  if(ghostData&&ghostCar){const gf=ghostData[Math.min(ghostIdx,ghostData.length-1)];const tp=tx(gf.dist);ctx.fillStyle='#9999ff';ctx.shadowBlur=6;ctx.shadowColor='#9999ff';ctx.beginPath();ctx.arc(tp.x,tp.y,4,0,Math.PI*2);ctx.fill()}
-  // Player dot
-  const pp=tx(playerDist);ctx.fillStyle='#fff';ctx.shadowBlur=10;ctx.shadowColor='#fff';ctx.beginPath();ctx.arc(pp.x,pp.y,6,0,Math.PI*2);ctx.fill();
-  // Direction arrow
-  const pt=trackAtDist(currentMap,playerDist),ar=pt.angle;
-  ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.shadowBlur=0;
-  ctx.beginPath();ctx.moveTo(pp.x-Math.sin(ar)*8,pp.y+Math.cos(ar)*8);ctx.lineTo(pp.x+Math.sin(ar)*8,pp.y-Math.cos(ar)*8);ctx.stroke();
-  ctx.shadowBlur=0;
+  if(ghostData&&ghostCar){const gf=ghostData[Math.min(ghostIdx,ghostData.length-1)];const gp=trackPattern(currentMap,-gf.dist);ctx.fillStyle='#9999ff';ctx.shadowBlur=6;ctx.shadowColor='#9999ff';ctx.beginPath();ctx.arc(sx(gp.x),sy(gf.dist),3,0,Math.PI*2);ctx.fill()}
+  // AI dots
+  aiCars.forEach((ai,i)=>{const aip=trackPattern(currentMap,-ai.userData.dist);ctx.fillStyle=i===0?'#ff007f':i===1?'#f39c12':'#8ea2ff';ctx.shadowBlur=6;ctx.shadowColor=ctx.fillStyle;ctx.beginPath();ctx.arc(sx(aip.x),sy(ai.userData.dist),3.5,0,Math.PI*2);ctx.fill()});
+  // Player dot + direction arrow
+  const pp=trackPattern(currentMap,-playerDist);
+  const ppx=sx(pp.x),ppy=sy(playerDist);
+  // Arrow direction in screen space
+  const pp2=trackPattern(currentMap,-(playerDist+50));
+  const adx=sx(pp2.x)-ppx,ady=sy(playerDist+50)-ppy,al=Math.sqrt(adx*adx+ady*ady)||1;
+  const nx=adx/al,ny=ady/al;
+  ctx.fillStyle='#fff';ctx.shadowBlur=14;ctx.shadowColor='#fff';
+  ctx.beginPath();ctx.arc(ppx,ppy,5.5,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.7)';ctx.lineWidth=3;ctx.shadowBlur=0;
+  ctx.beginPath();ctx.moveTo(ppx,ppy);ctx.lineTo(ppx+nx*9,ppy+ny*9);ctx.stroke();
+  ctx.strokeStyle='#fff';ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(ppx,ppy);ctx.lineTo(ppx+nx*9,ppy+ny*9);ctx.stroke();
   // Progress bar
-  const prog=clamp(playerDist/TL,0,1);ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(6,H-12,W-12,6);ctx.fillStyle=cfg.pc;ctx.fillRect(6,H-12,(W-12)*prog,6);
+  const prog=clamp(playerDist/TL,0,1);
+  ctx.shadowBlur=0;ctx.fillStyle='rgba(0,0,0,.5)';ctx.fillRect(6,H-10,W-12,5);
+  ctx.fillStyle=cfg.pc;ctx.shadowBlur=4;ctx.shadowColor=cfg.pc;ctx.fillRect(6,H-10,(W-12)*prog,5);
+  ctx.shadowBlur=0;
 }
 
 let toastTm2=null;
