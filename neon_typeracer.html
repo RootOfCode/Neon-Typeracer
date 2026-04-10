@@ -741,7 +741,7 @@ function updGhost(elapsedMs){
   const f0=ghostData[ghostIdx],f1=ghostData[Math.min(ghostIdx+1,ghostData.length-1)];
   const dt=f1.t-f0.t,al=dt>0?clamp((elapsedMs-f0.t)/dt,0,1):0;
   ghostCar.position.set(lerp(f0.x,f1.x,al),lerp(f0.y,f1.y,al)+.25,lerp(f0.z,f1.z,al));
-  ghostCar.rotation.y=lerp(f0.angle,f1.angle,al);
+  ghostCar.rotation.y=lerp(f0.angle,f1.angle,al)+Math.PI;
   const gd=lerp(f0.dist,f1.dist,al),delta=playerDist-gd;
   const el=document.getElementById('hud-ghost');
   el.textContent=delta>=0?`👻 +${delta.toFixed(0)}m AHEAD`:`👻 ${delta.toFixed(0)}m BEHIND`;
@@ -770,14 +770,14 @@ function updateRace(dt){
   if(!gameActive)return;
   playerSpeed*=effDrag;playerDist+=playerSpeed*dt*5;
   const pt=trackAtDist(currentMap,playerDist);
-  car.rotation.y=pt.angle;car.rotation.z=clamp(-pt.angle*.45+driftTilt,-.28,.28);
+  car.rotation.y=pt.angle+Math.PI;car.rotation.z=clamp(-pt.angle*.45+driftTilt,-.28,.28);
   car.position.x=lerp(car.position.x||pt.x,pt.x,.18);car.position.y=lerp(car.position.y||pt.y,pt.y,.18)+.25;car.position.z=-playerDist;
   if(playerSpeed>20&&Math.random()<.85)emitExhaust(car,MAP_CONFIGS[currentMap].accent,1.1+playerSpeed*.01);
   if(playerSpeed>15&&Math.random()<.18)spawnDust(1+playerSpeed*.015);
   aiCars.forEach((ai,i)=>{
     ai.userData.dist+=ai.userData.speed*dt;const p=trackAtDist(currentMap,ai.userData.dist);
     const lane=ai.userData.lane+Math.sin((ai.userData.dist+i*80)*.01)*.4;
-    ai.rotation.y=p.angle;ai.rotation.z=clamp(-p.angle*.32,-.16,.16);
+    ai.rotation.y=p.angle+Math.PI;ai.rotation.z=clamp(-p.angle*.32,-.16,.16);
     ai.position.x=lerp(ai.position.x||p.x+lane,p.x+lane,.12);ai.position.y=lerp(ai.position.y||p.y,p.y,.12)+.25;ai.position.z=-ai.userData.dist;
     if(Math.random()<.08)emitExhaust(ai,MAP_CONFIGS[currentMap].secondary,.7);
   });
