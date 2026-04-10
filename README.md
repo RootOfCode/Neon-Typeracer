@@ -1,46 +1,57 @@
 # Neon Typeracer
 
-A neon-soaked 3D browser racing game where typing is the engine. Every correct letter nudges your car forward, every perfect word builds momentum, and every Nitro burst can turn a close race into a finish-line victory. Race against three AI opponents across futuristic tracks, survive the pressure of fast-moving checkpoints, and finish first in a game that blends typing skill with arcade racing energy.
+A neon-soaked 3D browser racing game where typing is the engine. Every correct letter nudges your car forward, every perfect word builds momentum, and every Nitro burst can turn a close race into a finish-line victory. Race against three AI opponents across six futuristic tracks, earn Credits to unlock new cars and upgrades, and beat your own ghost lap to climb the leaderboard.
 
 ## What the game is
 
-Neon Typeracer is a single-file HTML game built around a simple idea: typing faster and cleaner should make you drive faster. Instead of a traditional typing test, the game turns your accuracy and rhythm into a racing challenge. The player car moves along a procedural 3D track while three AI racers stay on the road beside you, each with their own pace depending on the chosen difficulty.
+Neon Typeracer is a single-file HTML game built around a simple idea: typing faster and cleaner should make you drive faster. Instead of a traditional typing test, the game turns your accuracy and rhythm into a racing challenge. The player car moves along a procedural 3D track while three AI racers hold the road beside you, each pacing themselves to the chosen difficulty.
 
-The result is a quick, replayable arcade loop that is easy to understand at first glance and rewarding to master over time.
+Between races you spend the Credits you earn in the Garage, where four distinct cars and four upgrade paths let you push your performance further every session.
 
 ## Main features
 
 - Fully playable in the browser with no installation required
 - 3D racing presentation using Three.js
 - Race against 3 AI opponents on the same track
-- 3 map environments:
+- 6 map environments:
   - The Grid
   - Mars Outpost
-  - Starlight
-- 3 difficulty modes:
-  - Easy
-  - Medium
-  - Hard
-- Real-time stats for speed, rank, WPM, Nitro, multiplier, combo, and checkpoint progress
+  - Starlight Run
+  - Alpine Pass
+  - Coastal Drive
+  - Neon Valley
+- 3 difficulty modes: Easy, Medium, Hard
+- Garage with 4 unlockable cars across four tiers (Starter, Sport, Hyper, Ultra)
+- 4 upgrade tracks per car: Engine, Tires, Nitro Tank, Aero
+- Credits economy — earn after every race, spend in the Garage
+- Ghost car system — records your best lap per map and races it against you
+- Drift Flow mechanic — consistent typing rhythm builds a flow meter that rewards Nitro and drift points
+- Flow State banner on full drift meter
+- Real-time HUD: speed, rank, WPM, Nitro, multiplier, combo, checkpoint progress
+- Analog speedometer and minimap
 - Perfect-word combo system that rewards clean typing
-- Multiplier growth up to x2.5
-- Nitro boosts earned through performance and checkpoints
-- Finish screen with rank and final stats
-- Neon arcade UI with dynamic visuals
+- Multiplier growth up to x2.5 base (scales with Aero upgrade up to x4.0)
+- Nitro boosts earned through performance, checkpoints, and drift
+- Procedural audio engine: 124 BPM in-race music, engine tone, and SFX
+- Finish screen with rank, WPM, drift score, and credits breakdown
+- Persistent save via localStorage (credits, upgrades, owned cars, ghost data)
+- Neon arcade UI with dynamic visuals and speed-line effects
 - Responsive layout for desktop and mobile browsers
 
 ## Core gameplay loop
 
-1. Pick a track theme from the main menu.
+1. Pick a track from the main menu under **RACE**.
 2. Select a difficulty level.
-3. Start the race with **IGNITION**.
+3. Start the race.
 4. Type the word shown in the center panel.
 5. Press **Space** to submit the word.
-6. Correct typing increases speed and helps build your combo.
+6. Correct typing increases speed and builds your combo.
 7. Keep your streak alive to raise your multiplier and earn Nitro.
-8. Press **Tab** to unleash Nitro at the right moment.
-9. Reach checkpoints for extra rewards.
-10. Beat the AI to the finish line.
+8. Type with consistent rhythm to build **Drift Flow** — a full meter earns extra Nitro and drift points.
+9. Press **Tab** to unleash a Nitro burst at the right moment.
+10. Reach checkpoints for extra Nitro and a speed boost.
+11. Beat the AI to the finish line.
+12. Collect Credits, then visit the **Garage** to upgrade your car or buy a new one.
 
 ## Controls
 
@@ -48,6 +59,7 @@ The result is a quick, replayable arcade loop that is easy to understand at firs
 
 - `Space` — submit the current word
 - `Tab` — activate Nitro
+- `Escape` — exit race and return to menu
 - Click anywhere on the page to keep the hidden typing field focused
 
 ### Mobile
@@ -60,71 +72,115 @@ The result is a quick, replayable arcade loop that is easy to understand at firs
 
 The top HUD keeps the race readable at a glance:
 
-- **Velocity** shows the current speed of your car
-- **Rank** shows your current position in the race
+- **Position** shows your current rank in the race
 - **WPM** reflects how quickly you are typing
-- **Nitro** shows available boost charges
+- **Combo** shows your current perfect-word streak
 - **Multiplier** reflects the current perfect-streak bonus
-- **Track** displays a small minimap view of the race progress
+- **Checkpoint** shows progress along the track
+- **Nitro dots** at the center show available boost charges
 
-The lower typing panel shows the current word, a progress bar, checkpoint status, combo count, and a Nitro-ready hint when boost is available.
+The lower typing panel shows the current word, a race progress bar, checkpoint status, combo count, the Drift Flow bar with running drift points, and a Nitro-ready hint when boost is available.
+
+The speedometer on the lower-left shows your current speed in KM/H. The minimap on the lower-right shows your position, AI positions, the ghost car, and checkpoint markers.
 
 ## Maps
 
 ### The Grid
-A neon city track with a cyberpunk look. It uses glowing tones, futuristic roadside structures, and overhead elements that make the race feel like it is happening through a digital metropolis.
+A neon megacity canyon sprint with glowing towers, overhead structures, and cyberpunk barriers. The most classic Neon Typeracer look.
 
 ### Mars Outpost
-A rugged red-surface course with canyon-like scenery and dusty ambient details. It feels heavier and more grounded, with a more industrial sci-fi vibe.
+A red planet canyon blitz through rocky alien terrain with jagged formations and heavy industrial sci-fi scenery.
 
-### Starlight
-A deep-space route with stars, floating sci-fi accents, and a cool high-speed atmosphere. It is the most cosmic-looking of the three environments.
+### Starlight Run
+A zero-g orbital superhighway with deep-space stars, glowing ring structures, and a cool cosmic atmosphere.
 
-Each map changes the visuals, track styling, ambient lighting, and roadside scenery while keeping the same racing rules.
+### Alpine Pass
+A hairpin switchback mountain ascent with rocky outcroppings and dramatic elevation changes.
+
+### Coastal Drive
+Ocean-side sweeping curves with palm-style markers and a coastal panorama.
+
+### Neon Valley
+An underground neon tunnel circuit lit by vivid floor glow and barrier strips, the most claustrophobic and intense of the six routes.
+
+Each map changes the visuals, track layout, ambient lighting, fog density, road width, and roadside scenery while keeping the same racing rules.
 
 ## Difficulty settings
 
 ### Easy
-Best for learning the game and getting comfortable with the typing-to-speed rhythm.
+Best for learning the game and getting comfortable with the typing-to-speed rhythm. AI racers are relaxed and forgiving.
 
 ### Medium
 A balanced challenge that gives the race a good competitive pace.
 
 ### Hard
-Designed for players who want constant pressure and tighter competition from the AI.
+Designed for players who want constant pressure and tight competition. AI racers are fast and unrelenting.
 
-Difficulty changes AI speed and handling behavior, so the race feels different depending on the mode you choose.
+Difficulty changes AI speed and drag behavior, so the race feels meaningfully different at each level.
+
+## The Garage
+
+The Garage lets you buy cars and purchase upgrades using Credits earned from races.
+
+### Cars
+
+| Car | Class | Price | Description |
+|---|---|---|---|
+| Apex Type-01 | Starter | Free | Balanced starter. Master the fundamentals. |
+| Phantom GT | Sport | 800 CR | Precision-engineered for corner mastery. |
+| Nova Storm | Hyper | 2,200 CR | Raw speed. High risk, higher reward. |
+| Titan Apex | Ultra | 5,000 CR | The absolute pinnacle. Unstoppable force. |
+
+Each car has its own speed, acceleration, handling, and nitro stats visible in the Garage. Cars are previewed in a 3D rotating display with full neon lighting.
+
+### Upgrades
+
+Upgrades apply globally across all owned cars and have four levels each:
+
+- **Engine** — increases the speed gain from each correct keystroke
+- **Tires** — reduces speed decay between keystrokes
+- **Nitro Tank** — increases maximum Nitro charge capacity (3 → 5 charges)
+- **Aero** — raises the multiplier cap (x2.5 → x4.0)
 
 ## Scoring and progression systems
 
 ### Speed from typing
-Typing the target word correctly pushes your car forward. Correct letters help build momentum, while mistakes slow you down.
+Typing the target word correctly pushes your car forward letter by letter. Each correct keystroke adds speed. Mistakes slow you down and reset your combo.
 
-### Combo system
-Consecutive perfect words raise your combo counter. The combo is not just cosmetic; it contributes to your multiplier and encourages accurate, streak-based play.
+### Combo and Multiplier
+Consecutive perfect words raise your combo counter and your multiplier. A higher multiplier makes every correct keystroke produce more speed and earns Nitro faster. Multiplier resets on any mistake.
 
-### Multiplier
-Your multiplier grows as you maintain a strong streak, up to x2.5. A higher multiplier makes good typing more rewarding and helps you recover race position more quickly.
+### Drift Flow
+Typing with consistent rhythm — steady intervals between keystrokes — builds the Drift Flow meter. A full meter triggers a **Flow State** event, granting Nitro, drift smoke particles, and ongoing drift points. Drift points are tallied on the finish screen.
 
 ### Nitro
-Nitro is the game’s active boost resource. You earn it by playing well and by hitting checkpoints. Once you have at least one charge, you can press `Tab` to burst forward.
+Nitro is the game's active boost resource. You earn charges by typing perfectly, hitting checkpoints, and maxing the Drift Flow meter. Press `Tab` to burn a charge for a large speed burst.
 
 ### Checkpoints
-The track is divided into checkpoint segments. Crossing a checkpoint rewards you with progress feedback and extra Nitro, which creates a nice mid-race push and prevents the race from feeling flat.
+The track is divided into five checkpoint segments. Crossing each one rewards extra Nitro and a speed boost, keeping the pace of the race dynamic throughout.
+
+### Credits
+After each race you earn Credits based on four factors: finish position, WPM, perfect word count, and max combo. Credits are saved persistently and spent in the Garage.
+
+### Ghost system
+After each race your run is saved as a ghost for that map if it was your fastest. On future runs the ghost car appears on the track and the HUD shows whether you are ahead or behind in real time.
 
 ## Game screens
 
 ### Menu screen
-Lets you choose the map and difficulty before starting.
+Two options: **Race** (map and difficulty select) and **Garage** (cars and upgrades). Your current Credits balance is shown at the bottom.
+
+### Map Select
+Displays all six circuits as cards with a minimap preview, biome label, and track length. Difficulty is chosen here before starting.
 
 ### Countdown
-A short start countdown appears before the race begins.
+A short 3-2-1 countdown before the race begins.
 
 ### Race screen
-Shows the live race, your typing prompt, the minimap, the AI positions, and all gameplay stats.
+Shows the live 3D race, the typing prompt, the analog speedometer, the minimap, AI positions, and all gameplay stats.
 
 ### Finish screen
-Displays the final result, rank, WPM, selected map, and number of perfect words.
+Displays final rank, WPM, drift score, selected map, difficulty, credits breakdown, and ghost status (new record or defended).
 
 ## Project structure
 
@@ -141,11 +197,10 @@ Open `neon_typeracer.html` in a modern browser.
 
 ## Roadmap ideas
 
-- Persistent high scores saved across sessions
 - More maps and visual themes
-- Additional word sets or challenge modes
-- Audio/music polish with more feedback layers
-- Leaderboards or ghost races
+- Additional word sets and challenge modes
+- Audio music polish with more layered feedback
+- Online leaderboards or shared ghost races
 - Accessibility options for typing assistance and visual clarity
 
 ## License
