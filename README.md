@@ -1,4 +1,4 @@
-# 🏎️ Neon Typeracer — Electron Desktop App
+# Neon Typeracer — Electron Desktop App
 
 A 3D neon-styled typing racing game built with Electron. Type words to accelerate your car, chain combos to build a multiplier, hit nitro boosts, and race AI opponents across six unique circuits — all from your desktop. No internet required after install.
 
