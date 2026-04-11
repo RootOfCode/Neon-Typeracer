@@ -1,52 +1,106 @@
-# Neon Typeracer — Electron Desktop App
+# 🏎️ Neon Typeracer — Electron Desktop App
+
+A 3D neon-styled typing racing game built with Electron. Type words to accelerate, hit nitro boosts, and race to the finish line — all from your desktop.
+
+---
 
 ## Prerequisites
 
-- Node.js 18+ (`sudo apt install nodejs npm` or via nvm)
+- **Node.js 18+** — install via [nvm](https://github.com/nvm-sh/nvm) (recommended) or your package manager:
+  ```bash
+  sudo apt install nodejs npm   # Debian/Ubuntu
+  ```
+- **npm** (bundled with Node.js)
 
-## Build & Run
+---
+
+## Getting Started
 
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Run in dev mode
+# 2. Launch in development mode
 npm start
-
-# 3. Build for YOUR platform (Linux in your case)
-npm run build:linux
 ```
 
-The built app will be in `dist/`:
-- **AppImage**: `dist/Neon Typeracer-1.0.0.AppImage` (portable, run directly)
-- **deb**: `dist/neon-typeracer_1.0.0_amd64.deb` (install with `sudo dpkg -i`)
+---
 
-### Running the AppImage
+## Building a Distributable
+
+Build for **your current OS only** — cross-compilation is not supported for Electron apps.
+
+| OS      | Command               | Output in `dist/`                        |
+|---------|-----------------------|------------------------------------------|
+| Linux   | `npm run build:linux` | `Neon Typeracer-1.0.0.AppImage` + `.deb` |
+| Windows | `npm run build:win`   | `.exe` installer + portable `.exe`       |
+| macOS   | `npm run build:mac`   | `.dmg`                                   |
+
+### Running the Linux AppImage
+
 ```bash
 chmod +x "dist/Neon Typeracer-1.0.0.AppImage"
 ./"dist/Neon Typeracer-1.0.0.AppImage"
 ```
 
-## IMPORTANT: Build for YOUR OS
+### Installing the Debian package
 
-You're on Linux (Debian) — use `npm run build:linux`, NOT `build:win`.
-Windows builds only work on Windows. Cross-compilation via Wine will NOT work for Electron apps.
+```bash
+sudo dpkg -i dist/neon-typeracer_1.0.0_amd64.deb
+```
 
-| Your OS   | Command              | Output                    |
-|-----------|----------------------|---------------------------|
-| Linux     | `npm run build:linux`| AppImage + .deb           |
-| Windows   | `npm run build:win`  | .exe installer + portable |
-| macOS     | `npm run build:mac`  | .dmg                      |
+---
 
 ## Controls
 
-- **Type words** → accelerate
-- **SPACE** → submit word
-- **TAB** → nitro boost
-- **ESC** → quit race
-- **F11** → fullscreen
+| Key       | Action              |
+|-----------|---------------------|
+| **Type**  | Accelerate your car |
+| `SPACE`   | Submit current word |
+| `TAB`     | Nitro boost         |
+| `ESC`     | Quit the race       |
+| `F11`     | Toggle fullscreen   |
+
+---
+
+## Project Structure
+
+```
+neon-typeracer-electron/
+├── main.js        # Electron main process — window setup & IPC
+├── preload.js     # Preload script — secure renderer bridge
+├── index.html     # Game UI & logic (self-contained)
+├── icon.png       # App icon
+├── package.json   # Build config & scripts
+└── README.md
+```
+
+---
 
 ## Troubleshooting
 
-- **Black screen**: Run with `--disable-gpu` flag: `./app --disable-gpu`
-- **Sandbox errors on Linux**: Already handled in main.js, but if needed: `./app --no-sandbox`
+| Symptom                       | Fix                                                       |
+|-------------------------------|-----------------------------------------------------------|
+| Black / blank screen          | Launch with `--disable-gpu` flag                          |
+| Sandbox errors on Linux       | Launch with `--no-sandbox` (already handled in `main.js`) |
+| `electron` not found          | Run `npm install` first                                   |
+| Build fails on wrong OS       | Use the build command matching your current OS (see table above) |
+
+**Tip:** If you're on Linux and see a "SUID sandbox helper" error, try:
+```bash
+./"dist/Neon Typeracer-1.0.0.AppImage" --no-sandbox
+```
+
+---
+
+## Tech Stack
+
+- [Electron](https://www.electronjs.org/) v33
+- [electron-builder](https://www.electron.build/) v25
+- Vanilla JS / HTML5 Canvas (no frontend framework)
+
+---
+
+## License
+
+MIT
