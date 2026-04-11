@@ -1,10 +1,10 @@
 # Neon Typeracer
 
-A neon-soaked 3D browser racing game where typing is the engine. Every correct letter nudges your car forward, every perfect word builds momentum, and every Nitro burst can turn a close race into a finish-line victory. Race against three AI opponents across six futuristic tracks, earn Credits to unlock new cars and upgrades, and beat your own ghost lap to climb the leaderboard.
+A neon-soaked 3D browser racing game where typing is the engine. Every correct letter nudges your car forward, every perfect word builds momentum, and every Nitro burst can turn a close race into a finish-line victory. Race against seven AI opponents across six futuristic tracks, earn Credits to unlock new cars and upgrades, and beat your own ghost lap to climb the leaderboard.
 
 ## What the game is
 
-Neon Typeracer is a single-file HTML game built around a simple idea: typing faster and cleaner should make you drive faster. Instead of a traditional typing test, the game turns your accuracy and rhythm into a racing challenge. The player car moves along a procedural 3D track while three AI racers hold the road beside you, each pacing themselves to the chosen difficulty.
+Neon Typeracer is a single-file HTML game built around a simple idea: typing faster and cleaner should make you drive faster. Instead of a traditional typing test, the game turns your accuracy and rhythm into a racing challenge. The player car moves along a procedural 3D track while seven AI racers hold the road beside you, each pacing themselves to the chosen difficulty.
 
 Between races you spend the Credits you earn in the Garage, where four distinct cars and four upgrade paths let you push your performance further every session.
 
@@ -12,14 +12,14 @@ Between races you spend the Credits you earn in the Garage, where four distinct 
 
 - Fully playable in the browser with no installation required
 - 3D racing presentation using Three.js
-- Race against 3 AI opponents on the same track
-- 6 map environments:
-  - The Grid
-  - Mars Outpost
-  - Starlight Run
-  - Alpine Pass
-  - Coastal Drive
-  - Neon Valley
+- Race against 7 AI opponents on the same track (8 cars total)
+- 6 map environments with individual lap counts:
+  - Circuit Zero (4 laps)
+  - Redstone Ring (3 laps)
+  - Orbital Loop (5 laps)
+  - Summit Circuit (3 laps)
+  - Seaside Sprint (4 laps)
+  - Neon Abyss (2 laps)
 - 3 difficulty modes: Easy, Medium, Hard
 - Garage with 4 unlockable cars across four tiers (Starter, Sport, Hyper, Ultra)
 - 4 upgrade tracks per car: Engine, Tires, Nitro Tank, Aero
@@ -27,10 +27,10 @@ Between races you spend the Credits you earn in the Garage, where four distinct 
 - Ghost car system — records your best lap per map and races it against you
 - Drift Flow mechanic — consistent typing rhythm builds a flow meter that rewards Nitro and drift points
 - Flow State banner on full drift meter
-- Real-time HUD: speed, rank, WPM, Nitro, multiplier, combo, checkpoint progress
+- Real-time HUD: speed, rank, WPM, Nitro, multiplier, combo, lap and checkpoint progress
 - Analog speedometer and minimap
 - Perfect-word combo system that rewards clean typing
-- Multiplier growth up to x2.5 base (scales with Aero upgrade up to x4.0)
+- Multiplier cap scales with difficulty (Easy: x3.0, Medium: x2.5, Hard: x2.0 base, all raised further by the Aero upgrade)
 - Nitro boosts earned through performance, checkpoints, and drift
 - Procedural audio engine: 124 BPM in-race music, engine tone, and SFX
 - Finish screen with rank, WPM, drift score, and credits breakdown
@@ -72,11 +72,12 @@ Between races you spend the Credits you earn in the Garage, where four distinct 
 
 The top HUD keeps the race readable at a glance:
 
-- **Position** shows your current rank in the race
+- **Position** shows your current rank among all 8 racers
 - **WPM** reflects how quickly you are typing
+- **Lap** shows current lap out of the map's total
 - **Combo** shows your current perfect-word streak
 - **Multiplier** reflects the current perfect-streak bonus
-- **Checkpoint** shows progress along the track
+- **Checkpoint** shows progress within the current lap
 - **Nitro dots** at the center show available boost charges
 
 The lower typing panel shows the current word, a race progress bar, checkpoint status, combo count, the Drift Flow bar with running drift points, and a Nitro-ready hint when boost is available.
@@ -85,38 +86,38 @@ The speedometer on the lower-left shows your current speed in KM/H. The minimap 
 
 ## Maps
 
-### The Grid
-A neon megacity canyon sprint with glowing towers, overhead structures, and cyberpunk barriers. The most classic Neon Typeracer look.
+### Circuit Zero
+A neon megacity oval with a tight chicane. Glowing towers, cyberpunk barriers, and vivid neon color define the most iconic Neon Typeracer look. **4 laps.**
 
-### Mars Outpost
-A red planet canyon blitz through rocky alien terrain with jagged formations and heavy industrial sci-fi scenery.
+### Redstone Ring
+A dusty alien canyon loop with elevation changes. Jagged rock formations line the course under harsh orange lighting, like racing through a hostile outpost under pressure. **3 laps.**
 
-### Starlight Run
-A zero-g orbital superhighway with deep-space stars, glowing ring structures, and a cool cosmic atmosphere.
+### Orbital Loop
+A zero-g ring station superhighway. Stars fill the background, glowing ring structures float overhead, and the lighting is cool and cosmic. The fastest-feeling map visually. **5 laps.**
 
-### Alpine Pass
-A hairpin switchback mountain ascent with rocky outcroppings and dramatic elevation changes.
+### Summit Circuit
+A mountain hairpin loop with switchbacks and dramatic elevation changes. Rocky outcroppings frame the road and the atmosphere is cold and exposed. **3 laps.**
 
-### Coastal Drive
-Ocean-side sweeping curves with palm-style markers and a coastal panorama.
+### Seaside Sprint
+Ocean-side sweeping curves with open sky and coastal panorama. A more open, flowing layout compared to the tighter urban and underground maps. **4 laps.**
 
-### Neon Valley
-An underground neon tunnel circuit lit by vivid floor glow and barrier strips, the most claustrophobic and intense of the six routes.
+### Neon Abyss
+An underground neon tunnel circuit lit by vivid floor glow and barrier strips. The narrowest track in the game — concentrated pressure from start to finish. **2 laps.**
 
 Each map changes the visuals, track layout, ambient lighting, fog density, road width, and roadside scenery while keeping the same racing rules.
 
 ## Difficulty settings
 
 ### Easy
-Best for learning the game and getting comfortable with the typing-to-speed rhythm. AI racers are relaxed and forgiving.
+Best for learning the game and getting comfortable with the typing-to-speed rhythm. Higher word boost, more Nitro from clean typing, and a higher multiplier cap (x3.0 base). AI racers are relaxed and forgiving.
 
 ### Medium
-A balanced challenge that gives the race a good competitive pace.
+A balanced challenge that gives the race a good competitive pace. Moderate boost values and a multiplier cap of x2.5 base.
 
 ### Hard
-Designed for players who want constant pressure and tight competition. AI racers are fast and unrelenting.
+Designed for players who want constant pressure and tight competition. Lower word boost, less Nitro gain, and a tighter multiplier cap (x2.0 base). AI racers are fast and unrelenting.
 
-Difficulty changes AI speed and drag behavior, so the race feels meaningfully different at each level.
+Difficulty adjusts the player's speed gains, Nitro rewards, multiplier ceiling, and AI pace, so the race feels meaningfully different at each level.
 
 ## The Garage
 
@@ -140,7 +141,7 @@ Upgrades apply globally across all owned cars and have four levels each:
 - **Engine** — increases the speed gain from each correct keystroke
 - **Tires** — reduces speed decay between keystrokes
 - **Nitro Tank** — increases maximum Nitro charge capacity (3 → 5 charges)
-- **Aero** — raises the multiplier cap (x2.5 → x4.0)
+- **Aero** — raises the multiplier cap above the difficulty base (up to +0.8 additional)
 
 ## Scoring and progression systems
 
@@ -148,7 +149,7 @@ Upgrades apply globally across all owned cars and have four levels each:
 Typing the target word correctly pushes your car forward letter by letter. Each correct keystroke adds speed. Mistakes slow you down and reset your combo.
 
 ### Combo and Multiplier
-Consecutive perfect words raise your combo counter and your multiplier. A higher multiplier makes every correct keystroke produce more speed and earns Nitro faster. Multiplier resets on any mistake.
+Consecutive perfect words raise your combo counter and your multiplier. A higher multiplier makes every correct keystroke produce more speed and earns Nitro faster. Multiplier resets on any mistake. The cap depends on difficulty and your Aero upgrade level.
 
 ### Drift Flow
 Typing with consistent rhythm — steady intervals between keystrokes — builds the Drift Flow meter. A full meter triggers a **Flow State** event, granting Nitro, drift smoke particles, and ongoing drift points. Drift points are tallied on the finish screen.
@@ -157,7 +158,7 @@ Typing with consistent rhythm — steady intervals between keystrokes — builds
 Nitro is the game's active boost resource. You earn charges by typing perfectly, hitting checkpoints, and maxing the Drift Flow meter. Press `Tab` to burn a charge for a large speed burst.
 
 ### Checkpoints
-The track is divided into five checkpoint segments. Crossing each one rewards extra Nitro and a speed boost, keeping the pace of the race dynamic throughout.
+Each lap is divided into five checkpoint segments. Crossing each one rewards extra Nitro and a speed boost, keeping the pace of the race dynamic throughout.
 
 ### Credits
 After each race you earn Credits based on four factors: finish position, WPM, perfect word count, and max combo. Credits are saved persistently and spent in the Garage.
@@ -171,7 +172,7 @@ After each race your run is saved as a ghost for that map if it was your fastest
 Two options: **Race** (map and difficulty select) and **Garage** (cars and upgrades). Your current Credits balance is shown at the bottom.
 
 ### Map Select
-Displays all six circuits as cards with a minimap preview, biome label, and track length. Difficulty is chosen here before starting.
+Displays all six circuits as cards with a minimap preview, biome label, and lap count. Difficulty is chosen here before starting.
 
 ### Countdown
 A short 3-2-1 countdown before the race begins.
@@ -180,7 +181,7 @@ A short 3-2-1 countdown before the race begins.
 Shows the live 3D race, the typing prompt, the analog speedometer, the minimap, AI positions, and all gameplay stats.
 
 ### Finish screen
-Displays final rank, WPM, drift score, selected map, difficulty, credits breakdown, and ghost status (new record or defended).
+Displays final rank, WPM, drift score, selected map, difficulty, lap count, credits breakdown, and ghost status (new record or defended).
 
 ## Project structure
 
